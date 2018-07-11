@@ -183,7 +183,7 @@ AFRAME.registerSystem('bullet', {
         if (hit) {
           this.killBullet(bullet);
           this.targets[t].components.target.modifyLife(-bullet.life);
-          this.el.emit('hit', {bullet: bullet, target: this.targets[t], position: bullet.position});
+          //this.el.emit('hit', {bullet: bullet, target: this.targets[t], position: bullet.position});
           this.targets[t].emit('hit', {bullet: bullet, target: this.targets[t], position: bullet.position});
           break;
         }

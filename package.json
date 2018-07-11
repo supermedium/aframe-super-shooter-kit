@@ -1,16 +1,16 @@
 {
-  "name": "aframe-shooter-component",
+  "name": "aframe-simple-shooter",
   "version": "1.0.0",
-  "description": "A A-Frame Simple Shooter kit component for A-Frame.",
+  "description": "Simple Shooter Kit for A-Frame.",
   "main": "index.js",
-  "unpkg": "dist/aframe-shooter-component.min.js",
+  "unpkg": "dist/aframe-simple-shooter.min.js",
   "scripts": {
-    "dev": "budo index.js:dist/aframe-shooter-component.min.js --port 7000 --live --open",
-    "dist": "npm run rollup && uglifyjs dist/aframe-shooter-component.js > dist/aframe-shooter-component.min.js",
+    "dev": "budo index.js:dist/aframe-simple-shooter.min.js --port 7000 --live --open",
+    "dist": "npm run rollup && uglifyjs dist/aframe-simple-shooter.js > dist/aframe-simple-shooter.min.js",
     "lint": "semistandard -v | snazzy",
     "prepublish": "npm run dist",
     "ghpages": "ghpages",
-    "rollup": "rollup index.js --output.format umd --name 'aframe-shooter-component' --output.file dist/aframe-shooter-component.js",
+    "rollup": "rollup index.js --output.format umd --name 'aframe-simple-shooter' --output.file dist/aframe-simple-shooter.js",
     "start": "npm run dev",
     "test": "karma start ./tests/karma.conf.js",
     "test:firefox": "karma start ./tests/karma.conf.js --browsers Firefox",
@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/supermedium/aframe-shooter-component.git"
+    "url": "git+https://github.com/supermedium/aframe-simple-shooter.git"
   },
   "keywords": [
     "aframe",
@@ -32,9 +32,9 @@
   "author": "Diego F. Goberna <diego@feiss.be>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/supermedium/aframe-shooter-component/issues"
+    "url": "https://github.com/supermedium/aframe-simple-shooter/issues"
   },
-  "homepage": "https://github.com/supermedium/aframe-shooter-component#readme",
+  "homepage": "https://github.com/supermedium/aframe-simple-shooter#readme",
   "devDependencies": {
     "aframe": "*",
     "browserify": "^13.0.0",
