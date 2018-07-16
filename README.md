@@ -1,4 +1,4 @@
-## aframe-super-shooter
+# aframe-super-shooter
 
 Simple Shooter Kit for [A-Frame](https://aframe.io).
 
@@ -21,9 +21,9 @@ Target:
 * *Listen* to event `die` on a target to know when its life was finished
 
 
-### API
+## API
 
-#### Shooter component
+### Shooter component
 
 | Property | Description | Default Value |
 | -------- | ----------- | ------------- |
@@ -31,7 +31,7 @@ Target:
 | useBullet  | current bullet used   | 'normal'        |
 | cycle         | when changing to next or prev bullet type, cycle to the first or last (resp.) type when reaching the last/first (resp.)          |  false             |
 
-#### Bullet component
+### Bullet component
 
 | Property | Description | Default Value |
 | -------- | ----------- | ------------- |
@@ -41,7 +41,7 @@ Target:
 | maxTime  | When this time (in seconds) is elapsed, the bullet dissapears. |  1.0    |
 | cacheSize  | How many copies of this bullet can be on screen at the same time |  10    |
 
-#### Target component
+### Target component
 
 | Property | Description | Default Value |
 | -------- | ----------- | ------------- |
@@ -49,10 +49,13 @@ Target:
 | life | Internal life of target. Each time a bullet hits it, this life is reduced by bullet's life, and when it gets <= 0 the event 'die' is emmited to the target | 0 |
 | active | Whether this target is included in collision tests. | true |
 
+## Examples
 
-### Installation
+* [Simple example](http://supermedium.github.io/aframe-super-shooter)
 
-#### Browser
+## Installation
+
+### Browser
 
 Install and use by directly including the [browser files](dist):
 
@@ -77,7 +80,7 @@ Install and use by directly including the [browser files](dist):
 </body>
 ```
 
-#### npm
+### npm
 
 Install via npm:
 
