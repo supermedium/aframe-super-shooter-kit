@@ -51,7 +51,8 @@ Target:
 
 ## Examples
 
-* [Simple example](http://supermedium.github.io/aframe-super-shooter)
+* [Example gallery](https://supermedium.github.io/aframe-super-shooter/)
+* [Supercraft shooter](https://supermedium.github.io/supercraft-shooter/)
 
 ## Installation
 
