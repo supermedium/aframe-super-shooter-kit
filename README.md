@@ -1,4 +1,4 @@
-## aframe-simple-shooter
+## aframe-super-shooter
 
 Simple Shooter Kit for [A-Frame](https://aframe.io).
 
@@ -82,12 +82,12 @@ Install and use by directly including the [browser files](dist):
 Install via npm:
 
 ```bash
-npm install aframe-simple-shooter
+npm install aframe-super-shooter
 ```
 
 Then require and use.
 
 ```js
 require('aframe');
-require('aframe-simple-shooter');
+require('aframe-super-shooter');
 ```

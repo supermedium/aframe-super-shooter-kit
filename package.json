@@ -1,16 +1,16 @@
 {
-  "name": "aframe-simple-shooter",
+  "name": "aframe-super-shooter",
   "version": "1.0.1",
   "description": "Simple Shooter Kit for A-Frame.",
   "main": "index.js",
-  "unpkg": "dist/aframe-simple-shooter.min.js",
+  "unpkg": "dist/aframe-super-shooter.min.js",
   "scripts": {
-    "dev": "budo index.js:dist/aframe-simple-shooter.min.js --port 7000 --live --open",
-    "dist": "npm run rollup && uglifyjs dist/aframe-simple-shooter.js > dist/aframe-simple-shooter.min.js",
+    "dev": "budo index.js:dist/aframe-super-shooter.min.js --port 7000 --live --open",
+    "dist": "npm run rollup && uglifyjs dist/aframe-super-shooter.js > dist/aframe-super-shooter.min.js",
     "lint": "semistandard -v | snazzy",
     "prepublish": "npm run dist",
     "ghpages": "ghpages",
-    "rollup": "rollup index.js --output.format umd --name 'aframe-simple-shooter' --output.file dist/aframe-simple-shooter.js",
+    "rollup": "rollup index.js --output.format umd --name 'aframe-super-shooter' --output.file dist/aframe-super-shooter.js",
     "start": "npm run dev",
     "test": "karma start ./tests/karma.conf.js",
     "test:firefox": "karma start ./tests/karma.conf.js --browsers Firefox",
@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/supermedium/aframe-simple-shooter.git"
+    "url": "git+https://github.com/supermedium/aframe-super-shooter.git"
   },
   "keywords": [
     "aframe",
@@ -32,9 +32,9 @@
   "author": "Diego F. Goberna <diego@feiss.be>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/supermedium/aframe-simple-shooter/issues"
+    "url": "https://github.com/supermedium/aframe-super-shooter/issues"
   },
-  "homepage": "https://github.com/supermedium/aframe-simple-shooter#readme",
+  "homepage": "https://github.com/supermedium/aframe-super-shooter#readme",
   "devDependencies": {
     "aframe": "*",
     "browserify": "^13.0.0",
