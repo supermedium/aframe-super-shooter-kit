@@ -3,11 +3,14 @@
 [A-Frame](https://aframe.io) kit of components for making a simple WebVR
 shooter minigame. From the creators of A-Frame, Supermedium, and Supercraft.
 
-The kit is set of components and systems (under a single file) to provide a way
-of building simple shooting experiences, where a "shooter" shoots "bullets"
-that can hit "targets".
+![screenshot](http://supermedium.github.io/supercraft-shooter)
 
-![diagram](https://user-images.githubusercontent.com/674727/43211842-cb6de9da-9032-11e8-94ff-8c4b6b8ac176.png)
+**[PLAY](http://supermedium.github.io/supercraft-shooter)**
+
+The kit is set of simple and easy to use components to provide a way of
+building simple shooting experiences, where a "shooter" shoots "bullets" that
+can hit "targets". A large chunk of the game can be handled at just the
+declarative A-Frame layer in HTML.
 
 * One bullet entity acts as a template for the instances of shot bullets.
 * Shooter entity defines the source position and orientation of the bullets.
@@ -15,6 +18,8 @@ that can hit "targets".
 
 So we define which entities are bullets, shooters, and targets, and trigger and
 listen to actions using events.
+
+![diagram](https://user-images.githubusercontent.com/674727/43211842-cb6de9da-9032-11e8-94ff-8c4b6b8ac176.png)
 
 ## API
 
@@ -82,10 +87,6 @@ application that lets you build low-poly VR assets inside of VR with your
 hands, and export them to Web or JSON! With the shooter kit providing dead-easy
 components, A-Frame letting you do things in just HTML, and ability to create
 good assets without modeling experience, WebVR development is made simple.
-
-[![screenshot](screenshot.jpg)](http://supermedium.github.io/supercraft-shooter)
-
-[PLAY](http://supermedium.github.io/supercraft-shooter)
 
 The advantage of the Supercraft JSON exports alongside
 [aframe-supercraft-loader](https://www.npmjs.com/package/aframe-supercraft-loader)
