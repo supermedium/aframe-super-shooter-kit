@@ -5,138 +5,164 @@ if (typeof AFRAME === 'undefined') {
 }
 
 /**
- * shooter component
+ * Shooter. Entity that spawns bullets and handles bullet types.
  */
-
 AFRAME.registerComponent('shooter', {
   schema: {
-    bullets: {type: 'array', default:['normal']},
-    useBullet: {type: 'string', default: 'normal'},
+    activeBulletType: {type: 'string', default: 'normal'},
+    bulletTypes: {type: 'array', default: ['normal']},
     cycle: {default: false}
   },
 
   init: function () {
     this.el.addEventListener('shoot', this.onShoot.bind(this));
     this.el.addEventListener('changebullet', this.onChangeBullet.bind(this));
-    this.bulletSystem = this.el.sceneEl.systems['bullet'];
+    this.bulletSystem = this.el.sceneEl.systems.bullet;
   },
 
-  onShoot: function (evt) {
-    this.bulletSystem.shoot(this.data.useBullet, this.el.object3D);
+  /**
+   * Listent to `shoot` action / event to tell bullet system to fire a bullet.
+   */
+  onShoot: function () {
+    this.bulletSystem.shoot(this.data.activeBulletType, this.el.object3D);
   },
 
+  /**
+   * Listen to `changebullet` action / event telling the shooter to change bullet type.
+   */
   onChangeBullet: function (evt) {
+    var data = this.data;
+    var el = this.el;
     var idx;
-    if (evt.detail == 'next'){
-      idx = this.bullets.indexOf(this.data.useBullet);
-      if (idx === -1) return;
-      idx = this.data.cycle ? (idx + 1) % this.bullets.length : Math.min(this.bullets.length - 1, idx + 1);
-      this.data.useBullet = this.bullets[idx];
+
+    // Cycle to next bullet type.
+    if (evt.detail === 'next') {
+      idx = data.bulletTypes.indexOf(data.activeBulletType);
+      if (idx === -1) { return; }
+      idx = data.cycle
+        ? (idx + 1) % data.bulletTypes.length
+        : Math.min(data.bulletTypes.length - 1, idx + 1);
+      data.activeBulletType = data.bulletTypes[idx];
+      el.setAttribute('shooter', 'activeBulletType', data.bulletTypes[idx]);
+      return;
     }
-    else if (evt.detail == 'prev'){
-      idx = this.bullets.indexOf(this.data.useBullet);
-      if (idx === -1) return;
-      idx = this.data.cycle ? (idx - 1) % this.bullets.length : Math.max(0, idx - 1);
-      this.data.useBullet = this.bullets[idx];
+
+    // Cycle to previous bullet type.
+    if (evt.detail === 'prev') {
+      idx = data.bulletTypes.indexOf(data.activeBulletType);
+      if (idx === -1) { return; }
+      idx = data.cycle
+        ? (idx - 1) % data.bulletTypes.length
+        : Math.max(0, idx - 1);
+      data.activeBulletType = data.bulletTypes[idx];
+      el.setAttribute('shooter', 'activeBulletType', data.bulletTypes[idx]);
+      return;
     }
-    else {
-      this.data.useBullet = evt.detail;
-    }
+
+    // Direct set bullet type.
+    el.setAttribute('shooter', 'activeBulletType', evt.detail);
   }
 });
 
 /**
- * bullet component
+ * Bullet template component
  */
-
 AFRAME.registerComponent('bullet', {
   dependencies: ['material'],
+
   schema: {
+    damagePoints: {default: 1.0, type: 'float'},
+    maxTime: {default: 4.0, type: 'float'},  // seconds.
     name: {default: 'normal', type: 'string'},
-    life: {default: 1.0, type: 'float'},
-    speed: {default: 1.0, type: 'float'}, // meter / sec
-    maxTime: {default: 1.0, type: 'float'}, // secs
-    cacheSize: {default: 10, type: 'int', min: 0},
+    poolSize: {default: 10, type: 'int', min: 0},
+    speed: {default: 8.0, type: 'float'}  // meters / sec.
   },
 
   init: function () {
-    var self = this;
-    this.el.addEventListener('object3dset', function (evt) {
-      self.system.registerBullet(self);
+    var el = this.el;
+    el.object3D.visible = false;
+    el.addEventListener('object3dset', evt => {
+      el.sceneEl.systems.bullet.registerBullet(this);
     });
   }
-
 });
 
 /**
- * bullet system
+ * Bullet system for collision detection.
  */
-
-
 AFRAME.registerSystem('bullet', {
   init: function () {
-    var container = document.createElement('a-entity');
-    container.id = "_bullet-container";
-    this.el.sceneEl.appendChild(container);
-    
-    this.container = container.object3D;
-    this.containerID = container.object3D.id;
-    this.cache = {};
+    var bulletContainer;
+    bulletContainer = document.createElement('a-entity');
+    bulletContainer.id = 'superShooterBulletContainer';
+    this.el.sceneEl.appendChild(bulletContainer);
+
+    this.container = bulletContainer.object3D;
+    this.pool = {};
     this.targets = [];
   },
 
+  /**
+   * Register and initialize bullet type.
+   */
   registerBullet: function (bulletComponent) {
+    var bullet;
+    var bulletData;
+    var i;
     var model;
-    var b;
-    var data;
-    model = bulletComponent.el.object3D;
-    if (!model) return;
 
-    model.visible = false; // !!
-    data = bulletComponent.data;
-    // initialize cache and bullets
-    this.cache[data.name] = [];
-    for (var i = 0; i < data.cacheSize; i++) {
-      b = model.clone();
-      b.direction = new THREE.Vector3(0, 0, -1);
-      b.speed = data.speed;
-      b.name = data.name + i;
-      b.time = 0;
-      b.maxTime = data.maxTime * 1000;
-      b.life = data.life;
-      b.visible = false;
-      this.cache[data.name].push(b);
+    model = bulletComponent.el.object3D;
+    if (!model) { return; }
+    bulletData = bulletComponent.data;
+
+    // Initialize pool and bullets.
+    this.pool[bulletData.name] = [];
+    for (i = 0; i < bulletData.poolSize; i++) {
+      bullet = model.clone();
+      bullet.damagePoints = bulletData.damagePoints;
+      bullet.direction = new THREE.Vector3(0, 0, -1);
+      bullet.maxTime = bulletData.maxTime * 1000;
+      bullet.name = bulletData.name + i;
+      bullet.speed = bulletData.speed;
+      bullet.time = 0;
+      bullet.visible = false;
+      this.pool[bulletData.name].push(bullet);
     }
   },
 
-  registerTarget: function (comp) {
-    var obj = comp.el.object3D;
-    this.targets.push(comp.el);
-    if (comp.data.static) {
-      // precalculate bounding box
-      obj.bb = new THREE.Box3().setFromObject(obj);
-    }
+  /**
+   * Register single target.
+   */
+  registerTarget: function (targetComponent, isStatic) {
+    var targetObj;
+    this.targets.push(targetComponent.el);
+    if (!isStatic) { return; }
+
+    // Precalculate bounding box of bullet.
+    targetObj = targetComponent.el.object3D;
+    targetObj.boundingBox = new THREE.Box3().setFromObject(targetObj);
   },
 
   shoot: function (bulletName, gun) {
+    var i;
     var oldest = 0;
-    var oldesttime = 0;
-    var cache = this.cache[bulletName];
-    if (cache === undefined) return null;
+    var oldestTime = 0;
+    var pool = this.pool[bulletName];
 
-    // find available bullet and initialize it
-    for (var i = 0; i < cache.length; i++) {
-      if (cache[i].visible === false) {
-        return this.shootBullet(cache[i], gun);
-      }
-      else if (cache[i].time > oldesttime){
+    if (pool === undefined) { return null; }
+
+    // Find available bullet and initialize it.
+    for (i = 0; i < pool.length; i++) {
+      if (pool[i].visible === false) {
+        return this.shootBullet(pool[i], gun);
+      } else if (pool[i].time > oldestTime){
         oldest = i;
-        oldesttime = cache[i].time;
+        oldestTime = pool[i].time;
       }
     }
 
-    // all bullets are active, cache is full, get oldest bullet
-    return this.shootBullet(cache[oldest], gun);
+    // All bullets are active, pool is full, grab oldest bullet.
+    return this.shootBullet(pool[oldest], gun);
   },
 
   shootBullet: function (bullet, gun) {
@@ -149,81 +175,89 @@ AFRAME.registerSystem('bullet', {
     return bullet;
   },
 
-  tick: function (time, delta) {
-    var bullet;
-    var v = new THREE.Vector3();
-    for (var i = 0; i < this.container.children.length; i++) {
-      bullet = this.container.children[i];
-      if (!bullet.visible) { continue; }
-      bullet.time += delta;
-      if (bullet.time >= bullet.maxTime) {
-        this.killBullet(bullet);
-        continue;
-      }
-      v.copy(bullet.direction).multiplyScalar(delta / 850);
-      bullet.position.add(v);
+  tick: (function () {
+    var bulletBox = new THREE.Box3();
+    var bulletTranslation = new THREE.Vector3();
+    var targetBox = new THREE.Box3();
 
-      // colisions
-      var tbb = new THREE.Box3();
-      var bbb = new THREE.Box3().setFromObject(bullet);
-      var hit;
+    return function (time, delta) {
+      var bullet;
+      var i;
+      var isHit;
       var targetObj;
-      for (var t = 0; t < this.targets.length; t++) {
-        if (!this.targets[t].components.target.data.active) { continue; }
-        targetObj = this.targets[t].object3D;
-        if (!targetObj.visible) { continue; }
-        hit = false;
-        if (targetObj['bb']){
-          hit = targetObj.bb.intersectsBox(bbb);
-        }
-        else {
-          tbb.setFromObject(targetObj);
-          hit = tbb.intersectsBox(bbb);         
-        }
-        if (hit) {
+      var t;
+
+      for (i = 0; i < this.container.children.length; i++) {
+        bullet = this.container.children[i];
+        if (!bullet.visible) { continue; }
+        bullet.time += delta;
+        if (bullet.time >= bullet.maxTime) {
           this.killBullet(bullet);
-          this.targets[t].components.target.modifyLife(-bullet.life);
-          //this.el.emit('hit', {bullet: bullet, target: this.targets[t], position: bullet.position});
-          this.targets[t].emit('hit', {bullet: bullet, target: this.targets[t], position: bullet.position});
-          break;
+          continue;
+        }
+        bulletTranslation.copy(bullet.direction).multiplyScalar(delta / 850);
+        bullet.position.add(bulletTranslation);
+
+        // Check collisions.
+        bulletBox.setFromObject(bullet);
+        for (t = 0; t < this.targets.length; t++) {
+          let target = this.targets[t];
+          if (!target.getAttribute('target').active) { continue; }
+          targetObj = target.object3D;
+          if (!targetObj.visible) { continue; }
+          isHit = false;
+          if (targetObj.boundingBox) {
+            isHit = targetObj.boundingBox.intersectsBox(bulletBox);
+          } else {
+            targetBox.setFromObject(targetObj);
+            isHit = targetBox.intersectsBox(bulletBox);
+          }
+          if (isHit) {
+            this.killBullet(bullet);
+            target.components.target.onBulletHit(bullet);
+            target.emit('hit', null);
+            break;
+          }
         }
       }
-    }
-  },
+    };
+  })(),
 
   killBullet: function (bullet) {
     bullet.visible = false;
   }
-
 });
 
 /**
  * target component
  */
-
 AFRAME.registerComponent('target', {
   schema: {
+    active: {default: true},
+    healthPoints: {default: 1, type: 'float'},
     static: {default: true},
-    life: {default: 0, type: 'float'},
-    active: {default: true}
   },
+
   init: function () {
-    var self = this;
-    this.el.addEventListener('object3dset', function (evt) {
-      self.el.sceneEl.systems.bullet.registerTarget(self);
+    var el = this.el;
+    el.addEventListener('object3dset', evt => {
+      el.sceneEl.systems.bullet.registerTarget(this, this.data.static);
     });
   },
 
   update: function (oldData) {
-    this.life = this.data.life;
+    // `this.healthPoints` is current hit points with taken damage.
+    // `this.data.healthPoints` is total hit points.
+    this.healthPoints = this.data.healthPoints;
   },
 
-  modifyLife: function (life) {
-    if (!this.data.active) return;
-    this.life += life;
-    if (this.life <= 0) {
-      this.el.emit('die');
-    }
+  /**
+   * Take damage.
+   */
+  onBulletHit: function (bullet) {
+    if (!this.data.active) { return; }
+    this.lastBulletHit = bullet;
+    this.healthPoints -= bullet.damagePoints;
+    if (this.healthPoints <= 0) { this.el.emit('die'); }
   }
 });
-
