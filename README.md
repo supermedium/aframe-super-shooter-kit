@@ -58,6 +58,14 @@ These events can be triggered with `entity.emit(eventName)`.
 | healthPoints | Number of hit or health points of the target. When a bullet hits this target, its health points will decrease by the bullet's damage points. When the target reaches 0 health points, then the event 'die' is emitted on the target. | 1             |
 | static       | Whether this object does not ever move or change shape. If set to false, then the bounding box is recalculated continuously.                                                                                                         | true          |
 
+#### Members
+
+Component members can be accessed by like `entity.components.target.lastBulletHit`:
+
+| Member        | Description                                                                                                                                   |
+|---------------|-----------------------------------------------------------------------------------------------------------------------------------------------|
+| lastBulletHit | Reference object to the last bullet object3D that hit the target. Useful for attaining the position of where the bullet contacted the target. |
+
 #### Events
 
 Events emitted on the target that we can listen to, to perhaps show an
@@ -76,13 +84,40 @@ Install and use by directly including the [browser files](dist):
 
 ```html
 <head>
+  <title>A-Frame Super Shooter Kit - Basic</title>
   <script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script>
-  <script src="https://unpkg.com/aframe-super-shooter-kit@^1.0.1/dist/aframe-super-shooter-kit.min.js"></script>
+  <script src="../../dist/aframe-super-shooter-kit.min.js"></script>
   <script>
+    /**
+     * Click mouse to shoot.
+     */
     AFRAME.registerComponent('click-to-shoot', {
       init: function () {
-        document.body.addEventListener('mousedown', () => {
-          this.el.emit('shoot');
+        document.body.addEventListener('mousedown', () => { this.el.emit('shoot'); });
+      }
+    });
+
+    /**
+     * Change color when hit.
+     */
+    AFRAME.registerComponent('hit-handler', {
+      dependencies: ['material'],
+
+      init: function () {
+        var color;
+        var el = this.el;
+
+        color = new THREE.Color();
+        color.set('#666');
+        el.components.material.material.color.copy(color);
+        el.addEventListener('hit', () => {
+          color.addScalar(0.05);
+          el.components.material.material.color.copy(color);
+        });
+
+        el.addEventListener('die', () => {
+          color.setRGB(1, 0, 0);
+          el.components.material.material.color.copy(color);
         });
       }
     });
@@ -90,10 +125,14 @@ Install and use by directly including the [browser files](dist):
 </head>
 
 <body>
-  <a-scene>
-    <a-entity id="bulletTemplate" bullet geometry="primitive: sphere"></a-entity>
-    <a-entity class="target" target geometry="primitive: box"></a-entity>
-    <a-entity id="gun" shooter geometry="primitive: box" click-to-shoot></a-entity>
+  <a-scene background="color: #DADADA">
+    <a-entity id="bulletTemplate" bullet geometry="primitive: sphere; radius: 0.1" material="color: orange"></a-entity>
+
+    <a-entity class="target" target="healthPoints: 10" geometry="primitive: box" material="color: teal" position="0 0 -4" hit-handler></a-entity>
+
+    <a-entity id="gun" shooter geometry="primitive: box; width: 0.1; height: 0.1; depth: 0.3" material="color: red" click-to-shoot position="0 0 -1"></a-entity>
+
+    <a-camera id="camera" position="-1 0 0"></a-camera>
   </a-scene>
 </body>
 ```

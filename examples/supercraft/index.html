@@ -9,6 +9,13 @@
   <script src="https://unpkg.com/aframe-supercraft-loader@3.0.0/dist/aframe-supercraft-loader.min.js"></script>
   <script src="https://unpkg.com/aframe-supercraft-thing@1.1.0/dist/aframe-supercraft-thing.min.js"></script>
   <script src="components/enemy.js"></script>
+  <script>
+    AFRAME.registerComponent('click-to-shoot', {
+      init: function () {
+        document.body.addEventListener('mousedown', () => { this.el.emit('shoot'); });
+      }
+    });
+  </script>
 </head>
 <body>
   <a-scene>
@@ -106,7 +113,7 @@
     <a-entity id="enemy27expl" supercraft-thing="from: #supercraftThings; name: thing31; resetOrigin: true; ignorePosition: true"></a-entity>
 
     <!-- aframe-super-shooter-kit `bullet` template. -->
-    <a-entity bullet="name: normal; speed: 30.0; cacheSize: 20"
+    <a-entity bullet="name: normal; speed: 30.0; poolSize: 20"
               geometry="primitive: icosahedron; radius: 0.1;"
               material="color: #FF7; emissiveIntensity: 0.5; emissive: #FF7"></a-entity>
 
@@ -127,7 +134,7 @@
       oculus-touch-controls="hand: right; model: false;"
       proxy-event__shoot="event: triggerdown; to: #gunRight; as: shoot"
       proxy-event__shootsound="event: triggerdown; to: #soundShootRight; as: shoot"
-      shooter="bullets: normal; useBullet: normal">
+      shooter="bulletTypes: normal; activeBulletType: normal">
       <a-entity supercraft-thing="from: #supercraftThings; name: thing30; resetOrigin: true; ignorePosition: true" rotation="0 5 0" position="0 0 -0.03"></a-entity>
       <a-entity id="soundShootRight" sound="src: #soundShoot; poolSize: 10; on: shoot; volume: 0.6"></a-entity>
     </a-entity>
@@ -139,10 +146,12 @@
       oculus-touch-controls="hand: left; model: false"
       proxy-event__shoot="event: triggerdown; to: #gunLeft; as: shoot"
       proxy-event__shootsound="event: triggerdown; to: #soundShootLeft; as: shoot"
-      shooter="bullets: normal; useBullet: normal">
+      shooter="bullets: normal; activeBulletType: normal">
       <a-entity supercraft-thing="from: #supercraftThings; name: thing30; resetOrigin: true; ignorePosition: true" rotation="0 5 0" position="0 0 -0.03"></a-entity>
       <a-entity id="soundShootLeft" sound="src: #soundShoot; poolSize: 10; on: shoot; volume: 0.6"></a-entity>
     </a-entity>
+
+    <a-camera shooter="bullets: normal; activeBulletType: normal" click-to-shoot></a-camera>
 
     <!-- Environment. -->
     <a-entity environment="preset: forest; skyColor: #17acbd; horizonColor: #fbc173; lighting: point; lightPosition: -1.2 1 -0.55; fog: 0.799; flatShading: true; playArea: 0.89; ground: hills; groundYScale: 21.3; groundColor: #385f3c; groundColor2: #3f6943; dressing: stones; dressingAmount: 300; dressingColor: #576037; dressingScale: 0.13; dressingVariance: 0.08 0.01 0.1; dressingOnPlayArea: 1"></a-entity>
