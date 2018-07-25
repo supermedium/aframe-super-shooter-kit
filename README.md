@@ -21,6 +21,8 @@ listen to actions using events.
 
 ![diagram](https://user-images.githubusercontent.com/674727/43211842-cb6de9da-9032-11e8-94ff-8c4b6b8ac176.png)
 
+[Video of Supercraft + Super Shooter Kit workflow](https://www.youtube.com/watch?v=RW3enib2X94)
+
 ## API
 
 ### `shooter` component
@@ -103,7 +105,7 @@ And `supercraft-thing-loader` can be used to pick individual objects out of a
 Supercraft scene of objects. You can create all your assets in one scene, make
 sure they have good scale relative to one another, tweak them all at once!
 
-[Watch quick video of the Supercraft + Super Shooter Kit workflow!](https://www.youtube.com/watch?v=RW3enib2X94)
+**[VIDEO](https://www.youtube.com/watch?v=RW3enib2X94)**
 
 ## Installation
 
