@@ -3,7 +3,7 @@
 [A-Frame](https://aframe.io) kit of components for making a simple WebVR
 shooter minigame. From the creators of A-Frame, Supermedium, and Supercraft.
 
-![screenshot](http://supermedium.github.io/supercraft-shooter)
+![screenshot](https://user-images.githubusercontent.com/674727/43233052-499cf788-9074-11e8-98bb-3823e30ef13d.jpg)
 
 **[PLAY](http://supermedium.github.io/supercraft-shooter)**
 
