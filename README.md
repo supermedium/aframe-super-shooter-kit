@@ -16,14 +16,13 @@ that can hit "targets".
 So we define which entities are bullets, shooters, and targets, and trigger and
 listen to actions using events.
 
-**[EXAMPLE: Supercraft Shooter](https://supermedium.github.io/supercraft-shooter/)** using
-assets quickly put together in VR via [Supercraft](https://supermedium.com/supercraft/).
-
-[Watch quick video of the Supercraft + Super Shooter Kit workflow!](https://www.youtube.com/watch?v=RW3enib2X94)
-
 ## API
 
 ### `shooter` component
+
+The `shooter` component should be attached to a controller for gun. But it can
+also be attached to the camera to support 2D / desktop or normal smartphone if
+wired to mouse or touch.
 
 | Property         | Description                                                                                                                                          | Default Value |
 | --------         | -----------                                                                                                                                          | ------------- |
@@ -76,9 +75,41 @@ explosion effect on target hit or die.
 | hit        | Target was hit by a bullet.                            |
 | die        | Target ran out of healthPoints and has been destroyed. |
 
+## With Supercraft Assets
+
+[Supercraft](https://supermedium.com/supercraft) is an A-Frame WebVR
+application that lets you build low-poly VR assets inside of VR with your
+hands, and export them to Web or JSON! With the shooter kit providing dead-easy
+components, A-Frame letting you do things in just HTML, and ability to create
+good assets without modeling experience, WebVR development is made simple.
+
+[![screenshot](screenshot.jpg)](http://supermedium.github.io/supercraft-shooter)
+
+[PLAY](http://supermedium.github.io/supercraft-shooter)
+
+The advantage of the Supercraft JSON exports alongside
+[aframe-supercraft-loader](https://www.npmjs.com/package/aframe-supercraft-loader)
+is that they are tailored for A-Frame resulting in extremely small file sizes
+and performant through geometry merging.
+
+An extremely cool workflow is using the `supercraft-loader` to "live-reload"
+assets.  The Supercraft JSON is hosted on the Web via name; we just need to do
+`supercraft-loader="name: my-supercraft-site"`, and whenever we publish an update
+to `my-supercraft-site` within Supercraft, the scene will automatically have
+access to the fresh new assets.
+
+And `supercraft-thing-loader` can be used to pick individual objects out of a
+Supercraft scene of objects. You can create all your assets in one scene, make
+sure they have good scale relative to one another, tweak them all at once!
+
+[Watch quick video of the Supercraft + Super Shooter Kit workflow!](https://www.youtube.com/watch?v=RW3enib2X94)
+
 ## Installation
 
 ### Browser
+
+See the [Supercraft Shooter example source
+code](https://github.com/supermedium/aframe-super-shooter-kit/tree/master/examples/supercraft).
 
 Install and use by directly including the [browser files](dist):
 
@@ -132,7 +163,7 @@ Install and use by directly including the [browser files](dist):
 
     <a-entity id="gun" shooter geometry="primitive: box; width: 0.1; height: 0.1; depth: 0.3" material="color: red" click-to-shoot position="0 0 -1"></a-entity>
 
-    <a-camera id="camera" position="-1 0 0"></a-camera>
+    <a-camera id="camera" position="-1 0 0" shooter click-to-shoot></a-camera>
   </a-scene>
 </body>
 ```
