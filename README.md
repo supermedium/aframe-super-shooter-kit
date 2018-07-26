@@ -99,7 +99,10 @@ is that they are tailored for A-Frame resulting in extremely small file sizes
 and performant through geometry merging.
 
 All 3D assets in this scene are delivered within a single 190KB JSON file:
-[Supercraft Shooter](https://supermedium.github.io/supercraft-shooter).
+[Supercraft Shooter](https://supermedium.github.io/supercraft-shooter). All
+the assets in the game were done using Supercraft in **45 minutes**, and the
+code is just dozens of lines of Javascript and HTML. Game created in an
+afternoon.
 
 An extremely cool workflow is using the `supercraft-loader` to "live-reload"
 assets.  The Supercraft JSON is hosted on the Web via name; we just need to do
