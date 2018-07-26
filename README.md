@@ -94,8 +94,12 @@ good assets without modeling experience, WebVR development is made simple.
 
 The advantage of the Supercraft JSON exports alongside
 [aframe-supercraft-loader](https://www.npmjs.com/package/aframe-supercraft-loader)
+and [aframe-supercraft-thing](https://www.npmjs.com/package/aframe-supercraft-thing)
 is that they are tailored for A-Frame resulting in extremely small file sizes
 and performant through geometry merging.
+
+All 3D assets in this scene are delivered within a single 190KB JSON file:
+[Supercraft Shooter](https://supermedium.github.io/supercraft-shooter).
 
 An extremely cool workflow is using the `supercraft-loader` to "live-reload"
 assets.  The Supercraft JSON is hosted on the Web via name; we just need to do
