@@ -12,12 +12,14 @@ building simple shooting experiences, where a "shooter" shoots "bullets" that
 can hit "targets". A large chunk of the game can be handled at just the
 declarative A-Frame layer in HTML.
 
-* One bullet entity acts as a template for the instances of shot bullets.
-* Shooter entity defines the source position and orientation of the bullets.
-* Collisions among bullet's and target's bounding boxes are checked.
+1. One `bullet` entity acts as a template for the instances of shot bullets.
+2. Entity with `shooter` component attached (e.g., a gun) spawns bullets on
+`shoot` event from its position.
+3. Collisions among bullet's and `target`'s bounding boxes are checked.
+4. Health and life of targets are calculated (`hit` and `die` events).
 
-So we define which entities are bullets, shooters, and targets, and trigger and
-listen to actions using events.
+So we define which entities are bullets, shooters, and targets, and then wire
+up the game using controls and progress the game with events.
 
 ![diagram](https://user-images.githubusercontent.com/674727/43211842-cb6de9da-9032-11e8-94ff-8c4b6b8ac176.png)
 
