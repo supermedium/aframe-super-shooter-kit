@@ -15,13 +15,6 @@
         document.body.addEventListener('mousedown', () => { this.el.emit('shoot'); });
       }
     });
-
-    AFRAME.registerComponent('daydream', {
-      init: function () {
-        // Event fired by Daydream controller if present
-        this.el.addEventListener('trackpaddown', () => { this.el.emit('shoot'); });
-      }
-    });
   </script>
 </head>
 <body>
@@ -140,7 +133,7 @@
       vive-controls="hand: right; model: false;"
       oculus-touch-controls="hand: right; model: false;"
       daydream-controls="hand: right; model: false"
-      daydream
+      proxy-event__daydream="event: trackpaddown; to: #rightGun; as: triggerdown"
       proxy-event__shoot="event: triggerdown; to: #gunRight; as: shoot"
       proxy-event__shootsound="event: triggerdown; to: #soundShootRight; as: shoot"
       shooter="bulletTypes: normal; activeBulletType: normal">
@@ -154,7 +147,7 @@
       vive-controls="hand: left; model: false"
       oculus-touch-controls="hand: left; model: false"
       daydream-controls="hand: left; model: false"
-      daydream
+      proxy-event__daydream="event: trackpaddown; to: #leftGun; as: triggerdown"
       proxy-event__shoot="event: triggerdown; to: #gunLeft; as: shoot"
       proxy-event__shootsound="event: triggerdown; to: #soundShootLeft; as: shoot"
       shooter="bullets: normal; activeBulletType: normal">
