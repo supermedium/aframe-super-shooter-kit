@@ -132,7 +132,9 @@
       id="rightGun"
       vive-controls="hand: right; model: false;"
       oculus-touch-controls="hand: right; model: false;"
-      proxy-event__shoot="event: triggerdown; to: #gunRight; as: shoot"
+      daydream-controls="hand: right; model: false"
+      proxy-event__daydream="event: trackpaddown; to: #rightGun; as: triggerdown"
+      proxy-event__shoot="event: triggerdown; to: #rightGun; as: shoot"
       proxy-event__shootsound="event: triggerdown; to: #soundShootRight; as: shoot"
       shooter="bulletTypes: normal; activeBulletType: normal">
       <a-entity supercraft-thing="from: #supercraftThings; name: thing30; resetOrigin: true; ignorePosition: true" rotation="0 5 0" position="0 0 -0.03"></a-entity>
@@ -144,7 +146,9 @@
       id="leftGun"
       vive-controls="hand: left; model: false"
       oculus-touch-controls="hand: left; model: false"
-      proxy-event__shoot="event: triggerdown; to: #gunLeft; as: shoot"
+      daydream-controls="hand: left; model: false"
+      proxy-event__daydream="event: trackpaddown; to: #leftGun; as: triggerdown"
+      proxy-event__shoot="event: triggerdown; to: #leftGun; as: shoot"
       proxy-event__shootsound="event: triggerdown; to: #soundShootLeft; as: shoot"
       shooter="bullets: normal; activeBulletType: normal">
       <a-entity supercraft-thing="from: #supercraftThings; name: thing30; resetOrigin: true; ignorePosition: true" rotation="0 5 0" position="0 0 -0.03"></a-entity>
