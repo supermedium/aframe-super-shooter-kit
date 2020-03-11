@@ -214,8 +214,8 @@ AFRAME.registerSystem('bullet', {
           }
           if (isHit) {
             this.killBullet(bullet);
-            target.components.target.onBulletHit(bullet);
             target.emit('hit', null);
+            target.components.target.onBulletHit(bullet);
             break;
           }
         }
